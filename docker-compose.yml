@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  auth-service:
+    image: cosmtrek/air:v1.61.1
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+      - go-modules:/go/pkg/mod
+    working_dir: /app
+    command: ["-c", "/app/.air.toml"]
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+    env_file:
+      - '.env.docker'
+
+  db:
+    image: postgres:15
+    container_name: auth_db
+    ports:
+      - "5432:5432"
+    env_file:
+      - '.env.docker'
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+
+volumes:
+  go-modules:
+  auth_db_data:
