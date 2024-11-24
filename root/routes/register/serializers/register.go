@@ -1,4 +1,4 @@
-package serializers
+package registerSerializers
 
 import (
 	"net/http"

@@ -15,7 +15,7 @@ services:
     depends_on:
       - db
     env_file:
-      - '.env.docker'
+      - '.env.main'
 
   db:
     image: postgres:15
@@ -23,7 +23,7 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - '.env.docker'
+      - '.env.main'
     volumes:
       - auth_db_data:/var/lib/postgresql/data
 

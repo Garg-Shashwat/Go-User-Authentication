@@ -1,5 +1,7 @@
 package constants
 
 const (
-	EnvFileName = ".env.docker"
+	EnvFileName   = ".env.main"
+	AccessExpiry  = 2
+	RefreshExpiry = 168
 )

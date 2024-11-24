@@ -3,7 +3,8 @@ package transport
 import (
 	"net/http"
 
-	"github.com/Garg-Shashwat/Go-User-Authentication/root/routes/register/controllers"
+	loginControllers "github.com/Garg-Shashwat/Go-User-Authentication/root/routes/login/controllers"
+	registerControllers "github.com/Garg-Shashwat/Go-User-Authentication/root/routes/register/controllers"
 	"github.com/labstack/echo/v4"
 	echoMiddleware "github.com/labstack/echo/v4/middleware"
 )
@@ -16,5 +17,6 @@ func addRoutes(router *echo.Echo) {
 		return c.JSON(http.StatusOK, "Pong!")
 	})
 
-	router.POST("/register", controllers.RegisterUser)
+	router.POST("/register", registerControllers.RegisterUser)
+	router.POST("/login", loginControllers.LoginUser)
 }

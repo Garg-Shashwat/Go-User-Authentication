@@ -12,5 +12,5 @@ type UserToken struct {
 	User      User
 	Token     string
 	ExpiresAt time.Time
-	IsRevoked bool
+	IsRevoked bool `gorm:"default:false"`
 }

@@ -6,14 +6,13 @@ import (
 
 	"github.com/Garg-Shashwat/Go-User-Authentication/root/models"
 	"github.com/Garg-Shashwat/Go-User-Authentication/root/repositories"
-	"github.com/Garg-Shashwat/Go-User-Authentication/root/routes/register/serializers"
+	registerSerializers "github.com/Garg-Shashwat/Go-User-Authentication/root/routes/register/serializers"
 	"github.com/Garg-Shashwat/Go-User-Authentication/root/utils"
-	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 // RegisterUser checks and registers user in system
-func RegisterUser(registerRequest serializers.RegisterRequest) (*models.User, error) {
+func RegisterUser(registerRequest registerSerializers.RegisterRequest) (*models.User, error) {
 	if usrRecord, err := repositories.GetUserByEmail(registerRequest.Email); usrRecord != nil {
 		return nil, utils.GetHTTPError(
 			http.StatusBadRequest,
@@ -28,7 +27,7 @@ func RegisterUser(registerRequest serializers.RegisterRequest) (*models.User, er
 		)
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(registerRequest.Password), bcrypt.DefaultCost)
+	hashedPassword, err := utils.HashPassword(registerRequest.Password)
 	if err != nil {
 		return nil, utils.GetHTTPError(
 			http.StatusInternalServerError,
@@ -39,7 +38,7 @@ func RegisterUser(registerRequest serializers.RegisterRequest) (*models.User, er
 
 	user := models.User{
 		Email:    registerRequest.Email,
-		Password: string(hashedPassword),
+		Password: hashedPassword,
 	}
 
 	if err := repositories.CreateUser(&user); err != nil {

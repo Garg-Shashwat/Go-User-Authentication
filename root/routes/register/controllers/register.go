@@ -1,16 +1,16 @@
-package controllers
+package registerControllers
 
 import (
 	"net/http"
 
-	"github.com/Garg-Shashwat/Go-User-Authentication/root/routes/register/serializers"
+	registerSerializers "github.com/Garg-Shashwat/Go-User-Authentication/root/routes/register/serializers"
 	"github.com/Garg-Shashwat/Go-User-Authentication/root/services"
 	"github.com/labstack/echo/v4"
 )
 
 // RegisterUser handles user registration
 func RegisterUser(ctx echo.Context) error {
-	registerRequest, err := serializers.BindRegisterRequest(ctx)
+	registerRequest, err := registerSerializers.BindRegisterRequest(ctx)
 	if err != nil {
 		return err
 	}
