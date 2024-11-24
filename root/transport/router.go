@@ -5,6 +5,7 @@ import (
 
 	loginControllers "github.com/Garg-Shashwat/Go-User-Authentication/root/routes/login/controllers"
 	logoutControllers "github.com/Garg-Shashwat/Go-User-Authentication/root/routes/logout/controllers"
+	refreshControllers "github.com/Garg-Shashwat/Go-User-Authentication/root/routes/refresh_token/controllers"
 	registerControllers "github.com/Garg-Shashwat/Go-User-Authentication/root/routes/register/controllers"
 	"github.com/Garg-Shashwat/Go-User-Authentication/root/transport/middleware"
 	"github.com/labstack/echo/v4"
@@ -23,5 +24,6 @@ func addRoutes(router *echo.Echo) {
 	router.POST("/login", loginControllers.LoginUser)
 
 	router.Use(middleware.AuthorizeUser)
+	router.GET("/refresh_token", refreshControllers.RefreshToken)
 	router.GET("/logout", logoutControllers.LogoutUser)
 }
