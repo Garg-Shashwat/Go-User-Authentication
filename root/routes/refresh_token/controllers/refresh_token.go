@@ -9,7 +9,11 @@ import (
 
 // RefreshToken renew access token on expiry
 func RefreshToken(ctx echo.Context) error {
-	userID := ctx.Get("userID").(uint)
+	userIDFloat64, ok := ctx.Get("userID").(float64)
+	if !ok {
+		return echo.NewHTTPError(http.StatusBadRequest, "Invalid user ID")
+	}
+	userID := uint(userIDFloat64)
 
 	tokens, err := services.RefreshToken(userID)
 	if err != nil {

@@ -9,7 +9,11 @@ import (
 
 // LogoutUser logs user out and revokes the token
 func LogoutUser(ctx echo.Context) error {
-	userID := ctx.Get("userID").(uint)
+	userIDFloat64, ok := ctx.Get("userID").(float64)
+	if !ok {
+		return echo.NewHTTPError(http.StatusBadRequest, "Invalid user ID")
+	}
+	userID := uint(userIDFloat64)
 	err := services.LogoutUser(userID)
 	if err != nil {
 		return err

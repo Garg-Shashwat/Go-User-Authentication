@@ -33,7 +33,7 @@ func AuthorizeUser(next echo.HandlerFunc) echo.HandlerFunc {
 			return echo.NewHTTPError(401, "Invalid Token Claims")
 		}
 
-		ctx.Set("userID", claims["sub"].(uint))
+		ctx.Set("userID", claims["sub"].(float64))
 
 		return next(ctx)
 	}
