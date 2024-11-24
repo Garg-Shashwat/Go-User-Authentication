@@ -29,7 +29,7 @@ func RevokePreviousTokens(userID uint) error {
 	return nil
 }
 
-// CreateRefreshToken generates a refresh token and stores it in the DB.
+// CreateRefreshToken generates a refresh token and stores it in the DB
 func CreateRefreshToken(userID uint) (string, error) {
 	token := uuid.New().String()
 
@@ -45,4 +45,26 @@ func CreateRefreshToken(userID uint) (string, error) {
 	}
 
 	return token, nil
+}
+
+// GetRefreshToken checks if a token for user exists and returns it
+func GetRefreshToken(userID uint) (*models.UserToken, error) {
+	var userToken models.UserToken
+	var tokenCount int64
+
+	query := config.GetDB().Model(&models.UserToken{}).
+		Where("user_id = ? AND is_revoked = false", userID)
+
+	query.Count(&tokenCount)
+
+	if tokenCount == 0 {
+		return nil, nil
+	}
+
+	err := query.Find(&userToken).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &userToken, nil
 }

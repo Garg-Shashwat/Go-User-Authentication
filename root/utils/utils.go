@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"time"
 
 	"github.com/Garg-Shashwat/Go-User-Authentication/config"
@@ -45,4 +46,29 @@ func GenerateJWTToken(userID uint) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(config.GetEnv().GetString("JWT_SECRET")))
+}
+
+// VerifyJWTToken checks if the JWT token is valid and not expired
+func VerifyJWTToken(tokenString string) (*jwt.Token, error) {
+	secretKey := []byte(config.GetEnv().GetString("JWT_SECRET"))
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("unexpected signing method")
+		}
+		return secretKey, nil
+	})
+
+	if err != nil {
+		if ve, ok := err.(*jwt.ValidationError); ok {
+			if ve.Errors&jwt.ValidationErrorExpired != 0 {
+				return nil, errors.New("token has expired")
+			} else {
+				return nil, errors.New("invalid token")
+			}
+		}
+		return nil, errors.New("token validation error")
+	}
+
+	return token, err
 }

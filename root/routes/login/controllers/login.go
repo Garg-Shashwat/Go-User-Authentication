@@ -20,5 +20,5 @@ func LoginUser(ctx echo.Context) error {
 		return err
 	}
 
-	return ctx.JSON(http.StatusCreated, tokens)
+	return ctx.JSON(http.StatusOK, tokens)
 }
