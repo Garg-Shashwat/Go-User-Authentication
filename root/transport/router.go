@@ -7,6 +7,7 @@ import (
 	echoMiddleware "github.com/labstack/echo/v4/middleware"
 )
 
+// addRoutes adds all routes to server
 func addRoutes(router *echo.Echo) {
 	router.Pre(echoMiddleware.RemoveTrailingSlash())
 
